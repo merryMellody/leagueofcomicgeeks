@@ -3,7 +3,7 @@
         "id": "116147",
         "name": "Paper Girls",
         "url": "https://leagueofcomicgeeks.com/comics/series/116147/paper-girls",
-        "cover": "https://leagueofcomicgeeks.com/comics/covers/medium/8900134-paper-girls.jpg",
+        "cover": "https://s3.amazonaws.com/comicgeeks/comics/covers/medium-116147.jpg",
         "publisher": "Image Comics",
         "count": 1,
         "series": "2015"
@@ -12,7 +12,7 @@
         "id": "100124",
         "name": "Adventure Time",
         "url": "https://leagueofcomicgeeks.com/comics/series/100124/adventure-time",
-        "cover": "https://leagueofcomicgeeks.com/comics/covers/medium/9302457-adventure-time.jpg",
+        "cover": "https://s3.amazonaws.com/comicgeeks/comics/covers/medium-100124.jpg",
         "publisher": "BOOM! Studios",
         "count": 1,
         "series": "2012 - 2018"

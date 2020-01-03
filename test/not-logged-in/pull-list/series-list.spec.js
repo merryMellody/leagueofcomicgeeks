@@ -5,7 +5,7 @@ module.exports = function(lofcg, pullListDate) {
     it("should return error when adding to pull list without permission", function(done) {
       lofcg.pullList.add(testIssueId, { type: lofcg.types.SERIES }, err => {
         expect(err).toEqual(jasmine.any(Error));
-        expect(err.message).toEqual("Not authenticated");
+        expect(err.message).toEqual("Unable to subscribe to series");
         done();
       });
     });
@@ -15,7 +15,7 @@ module.exports = function(lofcg, pullListDate) {
     it("should return error when removing to pull list without permission", function(done) {
       lofcg.pullList.remove(testIssueId, { type: lofcg.types.SERIES }, err => {
         expect(err).toEqual(jasmine.any(Error));
-        expect(err.message).toEqual("Not authenticated");
+        expect(err.message).toEqual("Unable to unsubscribe from series");
         done();
       });
     });

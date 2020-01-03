@@ -66,7 +66,9 @@ const seriesExtractor = function(response, options) {
       id,
       name,
       url: config.rootUrl + buildSeriesUrl(id, cover),
-      cover: config.rootUrl + cover,
+      cover: cover.includes("s3.amazonaws.com")
+        ? cover
+        : config.rootUrl + cover,
       publisher,
       count,
       series
@@ -178,12 +180,18 @@ const issueExtractor = function(response, options) {
     $description.find("a").remove();
     const description = $description.text().trim();
 
+    let coverResult;
+
+    if (cover.includes("no-cover")) coverResult = null;
+    else if (cover.includes("s3.amazonaws.com")) coverResult = cover;
+    else coverResult = config.rootUrl + cover;
+
     return {
       id,
       variantId,
       url: config.rootUrl + url,
       name,
-      cover: cover.includes("no-cover") ? null : config.rootUrl + cover,
+      cover: coverResult,
       publisher,
       description,
       releaseDate,

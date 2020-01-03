@@ -3,7 +3,7 @@
         "id": "113171",
         "name": "The Wicked + The Divine",
         "url": "https://leagueofcomicgeeks.com/comics/series/113171/the-wicked-the-divine",
-        "cover": "https://leagueofcomicgeeks.com/comics/covers/medium/2359884-the-wicked-the-divine.jpg",
+        "cover": "https://s3.amazonaws.com/comicgeeks/comics/covers/medium-113171.jpg",
         "publisher": "Image Comics",
         "count": 10,
         "series": "2014"
@@ -12,7 +12,7 @@
         "id": "116504",
         "name": "Rick and Morty",
         "url": "https://leagueofcomicgeeks.com/comics/series/116504/rick-and-morty",
-        "cover": "https://leagueofcomicgeeks.com/comics/covers/medium/5765063-rick-and-morty.jpg",
+        "cover": "https://s3.amazonaws.com/comicgeeks/comics/covers/medium-116504.jpg",
         "publisher": "Oni Press",
         "count": 1,
         "series": "2015"
@@ -21,7 +21,7 @@
         "id": "124950",
         "name": "Marvel Tsum Tsum",
         "url": "https://leagueofcomicgeeks.com/comics/series/124950/marvel-tsum-tsum",
-        "cover": "https://leagueofcomicgeeks.com/comics/covers/medium/6146985-marvel-tsum-tsum.jpg",
+        "cover": "https://s3.amazonaws.com/comicgeeks/comics/covers/medium-124950.jpg",
         "publisher": "Marvel Comics",
         "count": 4,
         "series": "2016"
@@ -30,7 +30,7 @@
         "id": "124177",
         "name": "Black Cloud",
         "url": "https://leagueofcomicgeeks.com/comics/series/124177/black-cloud",
-        "cover": "https://leagueofcomicgeeks.com/comics/covers/medium/9203306-black-cloud.jpg",
+        "cover": "https://s3.amazonaws.com/comicgeeks/comics/covers/medium-124177.jpg",
         "publisher": "Image Comics",
         "count": 1,
         "series": "2017"
