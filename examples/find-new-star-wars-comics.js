@@ -1,12 +1,13 @@
 /* eslint-disable no-console */
-const _ = require("lodash");
+const flattenDeep = require("lodash/flattenDeep");
+const orderBy = require("lodash/orderBy");
 const moment = require("moment");
 const lofcg = require("../");
 
 const weeks = 10;
 const wednesday = moment().day(3);
 const filter = "star wars";
-const range = _.range(weeks);
+const range = Array.from({ length: weeks }, (_, i) => i);
 const data = [];
 
 const filterUnwanted = function(list) {
@@ -15,7 +16,7 @@ const filterUnwanted = function(list) {
   const graphicNovel = " gn";
   const boxSet = " box set";
   const variant = " variant";
-  return _.filter(list, function({ name = "", variantId }) {
+  return list.filter(function({ name = "", variantId }) {
     const matches = name.match(/#\d+\w?(.*)?/i);
     return (
       !name.toLowerCase().endsWith(tradePaperback) &&
@@ -23,8 +24,8 @@ const filterUnwanted = function(list) {
       !name.toLowerCase().endsWith(graphicNovel) &&
       !name.toLowerCase().endsWith(boxSet) &&
       !name.toLowerCase().endsWith(variant) &&
-      (_.isNull(matches) || _.isUndefined(matches[1])) &&
-      _.isNull(variantId)
+      (matches === null || matches[1] === undefined) &&
+      variantId === null
     );
   });
 };
@@ -32,19 +33,18 @@ const filterUnwanted = function(list) {
 const outputresults = function(list) {
   if (list.length < range.length) return;
 
-  const starWarsComics = _.filter(
-    _.flattenDeep(list),
+  const starWarsComics = flattenDeep(list).filter(
     ({ name = "" }) => name.toLowerCase().indexOf(filter) > -1
   );
-  const mainIssues = _.orderBy(
+  const mainIssues = orderBy(
     filterUnwanted(starWarsComics),
     ["name", "releaseDate"],
     ["asc", "asc"]
   );
 
   // console.log(JSON.stringify(mainIssues, null, 4));
-  _.each(mainIssues, function({ releaseDate, name, url }) {
-    console.log(`[${releaseDate}] ${_.padEnd(name, 50)} --   ${url}`);
+  Object.entries(mainIssues).forEach(function({ releaseDate, name, url }) {
+    console.log(`[${releaseDate}] ${name.padEnd(50)} --   ${url}`);
   });
 };
 

@@ -1,7 +1,7 @@
-const _ = require("lodash");
+const trim = require("lodash/trim");
 
 module.exports = function(objectString) {
-  const sanitisedObjectString = _.trim(objectString.trim(), "{}")
+  const sanitisedObjectString = trim(objectString.trim(), "{}")
     .trim()
     .replace(/'/g, '"')
     .replace(/\s/g, "")

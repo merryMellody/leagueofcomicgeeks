@@ -1,4 +1,3 @@
-const _ = require("lodash");
 const queryString = require("query-string");
 const request = require("./request");
 const authentication = require("./authentication");
@@ -33,7 +32,7 @@ const modifyList = function(
       return callback(error);
     }
 
-    if (_.isNaN(parseInt(body, 10))) {
+    if (Number.isNaN(parseInt(body, 10))) {
       return callback(new Error(failureMessage));
     }
 
@@ -53,23 +52,21 @@ const getList = function(userId, listId, parameters, options, callback) {
     series: "thumbs"
   };
   const filterOptions = [].concat(options.filter || []);
-  const listRefinement = _.includes(filterOptions, filter.FIRST_ISSUES)
+  const listRefinement = filterOptions.includes(filter.FIRST_ISSUES)
     ? filter.FIRST_ISSUES
     : undefined;
 
   const type = options.type || config.defaultType;
-  const urlParameters = _.extend(
-    {
-      list: listId,
-      list_option: type,
-      list_refinement: listRefinement,
-      user_id: userId,
-      view: viewType[type] || "thumbs",
-      order: options.sort || "alpha-asc",
-      publisher: getPublisherIds(options.publishers)
-    },
-    parameters
-  );
+  const urlParameters = {
+    list: listId,
+    list_option: type,
+    list_refinement: listRefinement,
+    user_id: userId,
+    view: viewType[type] || "thumbs",
+    order: options.sort || "alpha-asc",
+    publisher: getPublisherIds(options.publishers),
+    ...parameters
+  };
   const urlParameterString = queryString.stringify(urlParameters, {
     arrayFormat: "bracket"
   });
@@ -93,7 +90,10 @@ const getList = function(userId, listId, parameters, options, callback) {
       return callback(new Error("Unable to parse response"));
     }
 
-    if (!_.isObject(responseJson) || !_.isString(responseJson.list)) {
+    if (
+      !(typeof responseJson === "object") ||
+      !(typeof responseJson.list === "string")
+    ) {
       return callback(new Error("Unknown response format"));
     }
 

@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-const _ = require("lodash");
 const lofcg = require("../");
 
 const myUserId = 26853; // alistairjcbrown
@@ -24,11 +23,11 @@ lofcg.collection.get(
           return;
         }
 
-        const seriesWeHaveInCommon = _.intersectionBy(
+        const seriesWeHaveInCommon = [
           myCollection,
-          theirCollection,
-          "id"
-        );
+          theirCollection
+        ].reduce((a, b) => a.filter(c => b.id.includes(c.id)));
+
         console.log(seriesWeHaveInCommon);
       }
     );

@@ -1,10 +1,9 @@
-const _ = require("lodash");
 const request = require("./request");
 const authentication = require("./authentication");
 
 const myListUrl = "/comic/my_list_bulk";
 const defaultIsSuccessful = function(body) {
-  return !_.isNaN(parseInt(body, 10));
+  return !Number.isNaN(parseInt(body, 10));
 };
 
 const modifyList = function(

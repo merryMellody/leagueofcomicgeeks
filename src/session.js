@@ -1,4 +1,4 @@
-const _ = require("lodash");
+const defer = require("lodash/defer");
 const cheerio = require("cheerio");
 const cookie = require("cookie");
 const request = require("./utils/request");
@@ -40,12 +40,12 @@ const createSession = function(username, password, callback) {
       }
 
       const matches = body.match(/UserVoice.push\(\['identify', ([^)]+)\]\)/);
-      if (_.isNull(matches) || !_.isString(matches[1])) {
+      if (matches === null || !(typeof matches[1] === "string")) {
         return callback(new Error("Unable to retrieve user details"));
       }
 
       const userDetails = convertObjectStringToObject(matches[1]);
-      if (_.isNull(userDetails)) {
+      if (userDetails === null) {
         return callback(new Error("Unable to retrieve user details"));
       }
 
@@ -103,15 +103,14 @@ const destroySession = function(callback) {
         response &&
         response.statusCode === 302 &&
         response.headers.location === "";
-      const sessionCookie = _.find(
-        response.headers["set-cookie"],
+      const sessionCookie = response.headers["set-cookie"].find(
         cookieString => {
           const session = getSessionFromCookie(cookieString);
-          return _.isString(session);
+          return typeof session === "string";
         }
       );
       const sessionReset =
-        _.isString(sessionCookie) &&
+        typeof sessionCookie === "string" &&
         getSessionFromCookie(sessionCookie) === "a:0:{}";
 
       if (isEmptyRedirect && sessionReset) {
@@ -124,13 +123,13 @@ const destroySession = function(callback) {
 };
 
 const getSession = function(callback) {
-  _.defer(() => {
+  defer(() => {
     callback(null, authentication.get());
   });
 };
 
 const setSession = function(authDetails, callback) {
-  _.defer(() => {
+  defer(() => {
     const sessionSet = authentication.set(
       authDetails.id,
       authDetails.username,

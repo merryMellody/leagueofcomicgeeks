@@ -1,11 +1,12 @@
-const _ = require("lodash");
+const isEmpty = require("lodash/isEmpty");
+const orderBy = require("lodash/orderBy");
 const cheerio = require("cheerio");
 const moment = require("moment");
 const config = require("../../config");
 const sort = require("./sort");
 
 const convertToISO8601Date = function(dateString) {
-  if (_.isEmpty(dateString)) return "";
+  if (isEmpty(dateString)) return "";
   const date = moment(dateString, "MMM Do, YYYY");
   if (!date.isValid()) return "";
   return date.format("YYYY-MM-DD");
@@ -13,16 +14,16 @@ const convertToISO8601Date = function(dateString) {
 
 const sortList = function(list, sortBy = sort.ASCENDING) {
   if (sortBy === sort.ASCENDING || sortBy === sort.DESCENDING) {
-    return _.orderBy(list, "name", sortBy);
+    return orderBy(list, "name", sortBy);
   }
   if (sortBy === sort.MOST_PULLED) {
-    return _.orderBy(list, "userMetrics.pulled", "desc");
+    return orderBy(list, "userMetrics.pulled", "desc");
   }
   if (sortBy === sort.PICK_OF_THE_WEEK) {
-    return _.orderBy(list, "userMetrics.pickOfTheWeekRating", "desc");
+    return orderBy(list, "userMetrics.pickOfTheWeekRating", "desc");
   }
   if (sortBy === sort.CONSENSUS_RATING) {
-    return _.orderBy(list, "userMetrics.consensusRating", "desc");
+    return orderBy(list, "userMetrics.consensusRating", "desc");
   }
   return list;
 };
@@ -101,13 +102,9 @@ const getVotes = function($el) {
   return toolbarPieces.reduce(
     function(votes, piece) {
       if (piece.includes(consensus))
-        return _.extend({}, votes, {
-          consensusRating: getVote(piece, consensus)
-        });
+        return { ...votes, consensusRating: getVote(piece, consensus) };
       if (piece.includes(potw))
-        return _.extend({}, votes, {
-          pickOfTheWeekRating: getVote(piece, potw)
-        });
+        return { ...votes, pickOfTheWeekRating: getVote(piece, potw) };
       return votes;
     },
     { consensusRating: null, pickOfTheWeekRating: null }
@@ -131,13 +128,11 @@ const getCollectionStats = function($, $el) {
     })
     .get();
 
-  return _.extend(
-    {
-      pulled: null,
-      added: null
-    },
+  return {
+    pulled: null,
+    added: null,
     ...collectionStats
-  );
+  };
 };
 
 const issueExtractor = function(response, options) {

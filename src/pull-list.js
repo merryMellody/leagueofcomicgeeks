@@ -1,4 +1,3 @@
-const _ = require("lodash");
 const accessList = require("./utils/list-access");
 const accessListBulk = require("./utils/list-access-bulk");
 const optionalOptions = require("./utils/optional-options");
@@ -26,9 +25,7 @@ const addToPullList = function(resourceId, options, callback) {
   }
 
   const failureMessage = "Unable to subscribe to series";
-  const isSuccessResponse = function(body) {
-    return _.includes(body, " subscribed ");
-  };
+  const isSuccessResponse = body => body.includes(" subscribed ");
   return accessListBulk.modify(
     resourceId,
     listId,
@@ -45,9 +42,7 @@ const removeFromPullList = function(resourceId, options, callback) {
   }
 
   const failureMessage = "Unable to unsubscribe from series";
-  const isSuccessResponse = function(body) {
-    return _.includes(body, " unsubscribed ");
-  };
+  const isSuccessResponse = body => body.includes(" unsubscribed ");
   return accessListBulk.modify(
     resourceId,
     listId,

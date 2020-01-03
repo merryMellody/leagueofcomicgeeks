@@ -1,4 +1,3 @@
-const _ = require("lodash");
 const types = require("./types");
 
 module.exports = function(wrappedFunction) {
@@ -7,15 +6,18 @@ module.exports = function(wrappedFunction) {
     const lastArg = args[argsCount - 1];
     const penultimateArg = args[argsCount - 2];
 
-    if (!_.isObject(penultimateArg) && _.isFunction(lastArg)) {
+    if (
+      !(typeof penultimateArg === "object") &&
+      typeof lastArg === "function"
+    ) {
       const defaultedOptions = { type: types.ISSUE };
       args.splice(argsCount - 1, 0, defaultedOptions);
     }
 
     if (
-      _.isObject(penultimateArg) &&
-      _.isFunction(lastArg) &&
-      _.isUndefined(penultimateArg.type)
+      typeof penultimateArg === "object" &&
+      typeof lastArg === "function" &&
+      penultimateArg.type === undefined
     ) {
       penultimateArg.type = types.ISSUE;
     }

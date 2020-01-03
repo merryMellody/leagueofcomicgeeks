@@ -1,4 +1,3 @@
-const _ = require("lodash");
 const request = require("request");
 const cookie = require("cookie");
 const moment = require("moment");
@@ -24,7 +23,7 @@ const setSession = function(value, expiry, age) {
 
 module.exports = {
   isAuthenticated() {
-    return _.isObject(user) && _.isString(getSession());
+    return typeof user === "object" && typeof getSession() === "string";
   },
 
   destroy() {
@@ -37,8 +36,8 @@ module.exports = {
 
   get() {
     const session = getSession();
-    if (!_.isObject(user)) return null;
-    return _.extend({}, user, { session });
+    if (!(typeof user === "object")) return null;
+    return { ...user, session };
   },
 
   set(id, username, email, session) {
@@ -48,7 +47,7 @@ module.exports = {
       email
     };
 
-    if (_.isString(session)) {
+    if (typeof session === "string") {
       const inThirtyDays = moment()
         .add(30, "days")
         .toDate();
