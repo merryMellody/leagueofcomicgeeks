@@ -1,9 +1,7 @@
-const _ = require("lodash");
-
 module.exports = function(lofcg, searchTerm) {
   const options = { type: lofcg.types.SERIES };
-  const filteredOptions = _.extend({ publishers: ["Dynamite"] }, options);
-  const sortedOptions = _.extend({ sort: lofcg.sort.DESCENDING }, options);
+  const filteredOptions = { publishers: ["Image Comics"], ...options };
+  const sortedOptions = { sort: lofcg.sort.DESCENDING, ...options };
 
   describe("get series list", function() {
     it("should provide no results for unknown search term", function(done) {
@@ -20,7 +18,7 @@ module.exports = function(lofcg, searchTerm) {
         expect(searchResults).toMatchJsonSnapshot(
           "all-series-seduction-of-the-innocent"
         );
-        _.each(searchResults, comic => {
+        Object.entries(searchResults).forEach(comic => {
           expect(comic).toBeAComicSeries();
         });
         done();
@@ -36,7 +34,7 @@ module.exports = function(lofcg, searchTerm) {
           expect(searchResults).toMatchJsonSnapshot(
             "filtered-series-seduction-of-the-innocent"
           );
-          _.each(searchResults, comic => {
+          Object.entries(searchResults).forEach(comic => {
             expect(comic).toBeAComicSeries();
           });
           done();
@@ -53,7 +51,7 @@ module.exports = function(lofcg, searchTerm) {
           expect(searchResults).toMatchJsonSnapshot(
             "sorted-series-seduction-of-the-innocent"
           );
-          _.each(searchResults, comic => {
+          Object.entries(searchResults).forEach(comic => {
             expect(comic).toBeAComicSeries();
           });
           done();

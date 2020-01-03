@@ -1,9 +1,7 @@
-const _ = require("lodash");
-
 module.exports = function(lofcg, newComicsDate) {
   const options = { type: lofcg.types.SERIES };
-  const filteredOptions = _.extend({ publishers: ["Image Comics"] }, options);
-  const sortedOptions = _.extend({ sort: lofcg.sort.DESCENDING }, options);
+  const filteredOptions = { publishers: ["Image Comics"], ...options };
+  const sortedOptions = { sort: lofcg.sort.DESCENDING, ...options };
 
   describe("get series list", function() {
     it("should provide no new comic series", function(done) {
@@ -18,7 +16,7 @@ module.exports = function(lofcg, newComicsDate) {
       lofcg.newComics.get(newComicsDate, options, (err, newComics) => {
         expect(err).toBeNull();
         expect(newComics).toMatchJsonSnapshot("all-series-2016-01-04");
-        _.each(newComics, comic => {
+        Object.entries(newComics).forEach(comic => {
           expect(comic).toBeAComicSeries();
         });
         done();
@@ -29,7 +27,7 @@ module.exports = function(lofcg, newComicsDate) {
       lofcg.newComics.get(newComicsDate, filteredOptions, (err, newComics) => {
         expect(err).toBeNull();
         expect(newComics).toMatchJsonSnapshot("filtered-series-2016-01-04");
-        _.each(newComics, comic => {
+        Object.entries(newComics).forEach(comic => {
           expect(comic).toBeAComicSeries();
         });
         done();
@@ -40,7 +38,7 @@ module.exports = function(lofcg, newComicsDate) {
       lofcg.newComics.get(newComicsDate, sortedOptions, (err, newComics) => {
         expect(err).toBeNull();
         expect(newComics).toMatchJsonSnapshot("sorted-series-2016-01-04");
-        _.each(newComics, comic => {
+        Object.entries(newComics).forEach(comic => {
           expect(comic).toBeAComicSeries();
         });
         done();

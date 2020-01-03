@@ -1,10 +1,10 @@
-const _ = require("lodash");
+const partial = require("lodash/partial");
 const helpers = require("../../utils/helper-tests");
 
 module.exports = function(lofcg, pullListDate) {
   const modificationPullListDate = "2017-04-05";
   const additionalArgs = [modificationPullListDate];
-  const confirmEmptyFirst = _.partial(
+  const confirmEmptyFirst = partial(
     helpers.confirmEmptyFirst,
     lofcg.pullList,
     additionalArgs
@@ -37,7 +37,7 @@ module.exports = function(lofcg, pullListDate) {
               (err, pullList) => {
                 expect(err).toBeNull();
                 expect(pullList).toMatchJsonSnapshot("all-issues-pull-list");
-                _.each(pullList, comic => {
+                Object.entries(pullList).forEach(comic => {
                   expect(comic).toBeAComicIssue();
                 });
                 done();

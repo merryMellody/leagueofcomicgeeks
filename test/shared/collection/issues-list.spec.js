@@ -1,5 +1,3 @@
-const _ = require("lodash");
-
 module.exports = function(lofcg) {
   describe("get issues list", function() {
     it("should provide no comics in collection with an invalid user id", function(done) {
@@ -14,7 +12,7 @@ module.exports = function(lofcg) {
       lofcg.collection.get(readonlyUserId, (err, collection) => {
         expect(err).toBeNull();
         expect(collection).toMatchJsonSnapshot("all-issues-collection");
-        _.each(collection, comic => {
+        Object.entries(collection).forEach(comic => {
           expect(comic).toBeAComicIssue();
         });
         done();
@@ -28,7 +26,7 @@ module.exports = function(lofcg) {
         (err, collection) => {
           expect(err).toBeNull();
           expect(collection).toMatchJsonSnapshot("filtered-issues-collection");
-          _.each(collection, comic => {
+          Object.entries(collection).forEach(comic => {
             expect(comic).toBeAComicIssue();
           });
           done();
@@ -43,7 +41,7 @@ module.exports = function(lofcg) {
         (err, collection) => {
           expect(err).toBeNull();
           expect(collection).toMatchJsonSnapshot("sorted-issues-collection");
-          _.each(collection, comic => {
+          Object.entries(collection).forEach(comic => {
             expect(comic).toBeAComicIssue();
           });
           done();

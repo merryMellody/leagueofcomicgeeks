@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-const _ = require("lodash");
+const get = require("lodash/get");
+const has = require("lodash/has");
 const queryString = require("query-string");
 const lofcg = require("../../");
 
@@ -11,11 +12,11 @@ const listIdMapping = {
 };
 
 const getListName = function(listId) {
-  return _.get(listIdMapping, listId, listId);
+  return get(listIdMapping, listId, listId);
 };
 
 const createStandardObject = function(request) {
-  if (request.method === "POST" && _.has(request.form, "list_id")) {
+  if (request.method === "POST" && has(request.form, "list_id")) {
     const isBulk = request.uri === "/comic/my_list_bulk";
     return {
       path: request.uri,
@@ -48,8 +49,7 @@ const createStandardObject = function(request) {
 module.exports = function(type, spy) {
   console.log(`\n${type} calls made (${spy.callCount})`);
 
-  const mappedRequests = _.reduce(
-    _.range(spy.callCount),
+  const mappedRequests = [...Array(spy.callCount).keys()].reduce(
     (mapping, callIndex) => {
       const call = spy.getCall(callIndex);
       const data = createStandardObject(call.args[0]);
@@ -60,8 +60,12 @@ module.exports = function(type, spy) {
     {}
   );
 
-  _.forEach(["none", "issue", "series"], dataType => {
+  ["none", "issue", "series"].forEach(dataType => {
     const requests = mappedRequests[dataType] || [];
-    console.log(` > ${_.capitalize(dataType)}: ${requests.length} requests`);
+    console.log(
+      ` > ${dataType.charAt(0).toUpperCase() + dataType.slice(1)}: ${
+        requests.length
+      } requests`
+    );
   });
 };

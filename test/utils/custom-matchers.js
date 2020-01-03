@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs-extra");
-const _ = require("lodash");
+const isEmpty = require("lodash/isEmpty");
 const moment = require("moment");
 
 const expectedIssueKeys = [
@@ -35,15 +35,15 @@ const createFailure = function(message, receivedValue) {
 };
 
 const isNonEmptyString = function(value) {
-  return _.isString(value) && !_.isEmpty(value);
+  return typeof value === "string" && !isEmpty(value);
 };
 
 const isNonNegativeNumber = function(value) {
-  return _.isNumber(value) && value >= 0;
+  return typeof value === "number" && value >= 0;
 };
 
 const isUrl = function(value) {
-  return _.startsWith(value, "http://") || _.startsWith(value, "https://");
+  return value.startsWith("http://") || value.startsWith("https://");
 };
 
 const isDate = function(value) {
@@ -65,7 +65,11 @@ module.exports = {
   toBeAComicIssue() {
     return {
       compare(actual) {
-        if (_.difference(_.keys(actual), expectedIssueKeys).length > 0) {
+        if (
+          [Object.keys(actual), expectedIssueKeys].reduce((a, b) =>
+            a.filter(c => b.id.includes(c.id))
+          ).length > 0
+        ) {
           return createFailure("Unexpected keys in comic issue object");
         }
 
@@ -86,7 +90,7 @@ module.exports = {
         if (!isNonEmptyString(id)) {
           return createFailure("Invalid id in comic issue object", id);
         }
-        if (!isNonEmptyString(variantId) && !_.isNull(variantId)) {
+        if (!isNonEmptyString(variantId) && variantId !== null) {
           return createFailure(
             "Invalid variant id in comic issue object",
             variantId
@@ -98,7 +102,7 @@ module.exports = {
         if (!isNonEmptyString(name)) {
           return createFailure("Invalid name in comic issue object", name);
         }
-        if (!isUrl(cover) && !_.isNull(cover)) {
+        if (!isUrl(cover) && cover !== null) {
           return createFailure(
             "Invalid cover URL in comic issue object",
             cover
@@ -110,7 +114,7 @@ module.exports = {
             publisher
           );
         }
-        if (_.isUndefined(description)) {
+        if (description !== undefined) {
           return createFailure(
             "Invalid description in comic issue object",
             description
@@ -122,10 +126,10 @@ module.exports = {
             releaseDate
           );
         }
-        if (_.isUndefined(price)) {
+        if (price !== undefined) {
           return createFailure("Invalid price in comic issue object", price);
         }
-        if (!isNonEmptyString(diamondSku) && !_.isNull(diamondSku)) {
+        if (!isNonEmptyString(diamondSku) && diamondSku !== null) {
           return createFailure(
             "Invalid Diamond SKU in comic issue object",
             diamondSku
@@ -133,7 +137,7 @@ module.exports = {
         }
         if (
           !isNonNegativeNumber(userMetrics.pulled) &&
-          !_.isNull(userMetrics.pulled)
+          userMetrics.pulled !== null
         ) {
           return createFailure(
             "Invalid pulled user metric in comic issue object",
@@ -142,7 +146,7 @@ module.exports = {
         }
         if (
           !isNonNegativeNumber(userMetrics.added) &&
-          !_.isNull(userMetrics.added)
+          userMetrics.added !== null
         ) {
           return createFailure(
             "Invalid added user metric in comic issue object",
@@ -151,7 +155,7 @@ module.exports = {
         }
         if (
           !isNonNegativeNumber(userMetrics.consensusRating) &&
-          !_.isNull(userMetrics.consensusRating)
+          userMetrics.consensusRating !== null
         ) {
           return createFailure(
             "Invalid consensus vote user metric in comic issue object",
@@ -160,7 +164,7 @@ module.exports = {
         }
         if (
           !isNonNegativeNumber(userMetrics.pickOfTheWeekRating) &&
-          !_.isNull(userMetrics.pickOfTheWeekRating)
+          userMetrics.pickOfTheWeekRating !== null
         ) {
           return createFailure(
             "Invalid pick of the week vote user metric in comic issue object",
@@ -176,7 +180,11 @@ module.exports = {
   toBeAComicSeries() {
     return {
       compare(actual) {
-        if (_.difference(_.keys(actual), expectedSeriesKeys).length > 0) {
+        if (
+          [Object.keys(actual), expectedSeriesKeys].reduce((a, b) =>
+            a.filter(c => b.id.includes(c.id))
+          ).length > 0
+        ) {
           return createFailure("Unexpected keys in comic series object");
         }
 
@@ -199,7 +207,7 @@ module.exports = {
           );
         if (!isNonNegativeNumber(count))
           return createFailure("Invalid count in comic series object", count);
-        if (_.isUndefined(series))
+        if (series !== undefined)
           return createFailure("Invalid series in comic series object", series);
 
         return { pass: true };
@@ -210,7 +218,11 @@ module.exports = {
   toBeASessionObject() {
     return {
       compare(actual, expected) {
-        if (_.difference(_.keys(actual), expectedSessionKeys).length > 0) {
+        if (
+          [Object.keys(actual), expectedSessionKeys].reduce((a, b) =>
+            a.filter(c => b.id.includes(c.id))
+          ).length > 0
+        ) {
           return createFailure("Unexpected keys in session object");
         }
 
@@ -236,7 +248,10 @@ module.exports = {
   toMatchJsonSnapshot() {
     return {
       compare(input, snapshotName) {
-        const actual = _.map(input, value => _.omit(value, "userMetrics"));
+        const actual = input.map(value => {
+          const { userMetrics, ...result } = value;
+          return result;
+        });
         const snapshotPath = getSnapshotPath(snapshotName);
         let snapshotData;
 

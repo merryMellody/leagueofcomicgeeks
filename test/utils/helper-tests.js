@@ -1,5 +1,3 @@
-const _ = require("lodash");
-
 const confirmEmptyFirst = function(resource, additionalArgs, tests) {
   return function() {
     describe("list is empty", function() {
@@ -33,7 +31,7 @@ const testRemovingFromList = function(resource, resourceId, additionalArgs) {
   let removeAdditionalArgs = additionalArgs;
   let getAdditionalArgs = additionalArgs;
 
-  if (_.isObject(additionalArgs) && !_.isArray(additionalArgs)) {
+  if (typeof additionalArgs === "object" && !Array.isArray(additionalArgs)) {
     removeAdditionalArgs = additionalArgs.remove;
     getAdditionalArgs = additionalArgs.get;
   }

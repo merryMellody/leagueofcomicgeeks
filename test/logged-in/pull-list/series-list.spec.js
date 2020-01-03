@@ -1,4 +1,4 @@
-const _ = require("lodash");
+const partial = require("lodash/partial");
 const helpers = require("../../utils/helper-tests");
 
 module.exports = function(lofcg, pullListDate) {
@@ -17,7 +17,7 @@ module.exports = function(lofcg, pullListDate) {
   require("../../shared/pull-list/series-list.spec")(lofcg, pullListDate);
 
   describe("subscribe future series and add to list", function() {
-    const confirmEmptyFirst = _.partial(
+    const confirmEmptyFirst = partial(
       helpers.confirmEmptyFirst,
       lofcg.pullList,
       futureAdditionalArgs
@@ -52,7 +52,7 @@ module.exports = function(lofcg, pullListDate) {
               (err, pullList) => {
                 expect(err).toBeNull();
                 expect(pullList).toMatchJsonSnapshot("all-series-pull-list");
-                _.each(pullList, comic => {
+                Object.entries(pullList).forEach(comic => {
                   expect(comic).toBeAComicSeries();
                 });
                 done();
@@ -137,7 +137,7 @@ module.exports = function(lofcg, pullListDate) {
   });
 
   describe("subscribe historical series", function() {
-    const confirmEmptyFirst = _.partial(
+    const confirmEmptyFirst = partial(
       helpers.confirmEmptyFirst,
       lofcg.pullList,
       historicalAdditionalArgs
@@ -199,7 +199,7 @@ module.exports = function(lofcg, pullListDate) {
   });
 
   describe("remove series from list", function() {
-    const confirmEmptyFirst = _.partial(
+    const confirmEmptyFirst = partial(
       helpers.confirmEmptyFirst,
       lofcg.pullList,
       historicalAdditionalArgs

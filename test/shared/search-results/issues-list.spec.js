@@ -1,5 +1,3 @@
-const _ = require("lodash");
-
 module.exports = function(lofcg, searchTerm) {
   describe("get issues list", function() {
     it("should provide no results for unknown search term", function(done) {
@@ -16,7 +14,7 @@ module.exports = function(lofcg, searchTerm) {
         expect(searchResults).toMatchJsonSnapshot(
           "all-issues-seduction-of-the-innocent"
         );
-        _.each(searchResults, comic => {
+        Object.entries(searchResults).forEach(comic => {
           expect(comic).toBeAComicIssue();
         });
         done();
@@ -32,7 +30,7 @@ module.exports = function(lofcg, searchTerm) {
           expect(searchResults).toMatchJsonSnapshot(
             "filtered-issues-seduction-of-the-innocent"
           );
-          _.each(searchResults, comic => {
+          Object.entries(searchResults).forEach(comic => {
             expect(comic).toBeAComicIssue();
           });
           done();
@@ -49,7 +47,7 @@ module.exports = function(lofcg, searchTerm) {
           expect(searchResults).toMatchJsonSnapshot(
             "first-issues-seduction-of-the-innocent"
           );
-          _.each(searchResults, comic => {
+          Object.entries(searchResults).forEach(comic => {
             expect(comic).toBeAComicIssue();
           });
           done();
@@ -66,7 +64,7 @@ module.exports = function(lofcg, searchTerm) {
           expect(searchResults).toMatchJsonSnapshot(
             "sorted-issues-seduction-of-the-innocent"
           );
-          _.each(searchResults, comic => {
+          Object.entries(searchResults).forEach(comic => {
             expect(comic).toBeAComicIssue();
           });
           done();

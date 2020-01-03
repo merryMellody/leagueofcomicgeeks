@@ -1,5 +1,3 @@
-const _ = require("lodash");
-
 module.exports = function(lofcg, newComicsDate) {
   describe("get issues list", function() {
     it("should provide no new comic", function(done) {
@@ -14,7 +12,7 @@ module.exports = function(lofcg, newComicsDate) {
       lofcg.newComics.get(newComicsDate, (err, newComics) => {
         expect(err).toBeNull();
         expect(newComics).toMatchJsonSnapshot("all-issues-2016-01-04");
-        _.each(newComics, comic => {
+        Object.entries(newComics).forEach(comic => {
           expect(comic).toBeAComicIssue();
         });
         done();
@@ -28,7 +26,7 @@ module.exports = function(lofcg, newComicsDate) {
         (err, newComics) => {
           expect(err).toBeNull();
           expect(newComics).toMatchJsonSnapshot("filtered-issues-2016-01-04");
-          _.each(newComics, comic => {
+          Object.entries(newComics).forEach(comic => {
             expect(comic).toBeAComicIssue();
           });
           done();
@@ -43,7 +41,7 @@ module.exports = function(lofcg, newComicsDate) {
         (err, newComics) => {
           expect(err).toBeNull();
           expect(newComics).toMatchJsonSnapshot("first-issues-2016-01-04");
-          _.each(newComics, comic => {
+          Object.entries(newComics).forEach(comic => {
             expect(comic).toBeAComicIssue();
           });
           done();
@@ -58,7 +56,7 @@ module.exports = function(lofcg, newComicsDate) {
         (err, newComics) => {
           expect(err).toBeNull();
           expect(newComics).toMatchJsonSnapshot("sorted-issues-2016-01-04");
-          _.each(newComics, comic => {
+          Object.entries(newComics).forEach(comic => {
             expect(comic).toBeAComicIssue();
           });
           done();

@@ -1,9 +1,7 @@
-const _ = require("lodash");
-
 module.exports = function(lofcg) {
   const options = { type: lofcg.types.SERIES };
-  const filteredOptions = _.extend({ publishers: ["Image Comics"] }, options);
-  const sortedOptions = _.extend({ sort: lofcg.sort.DESCENDING }, options);
+  const filteredOptions = { publishers: ["Image Comics"], ...options };
+  const sortedOptions = { sort: lofcg.sort.DESCENDING, ...options };
 
   describe("get series list", function() {
     it("should provide no comics in wish list with an invalid user id", function(done) {
@@ -18,7 +16,7 @@ module.exports = function(lofcg) {
       lofcg.wishList.get(readonlyUserId, options, (err, wishList) => {
         expect(err).toBeNull();
         expect(wishList).toMatchJsonSnapshot("all-series-wish-list");
-        _.each(wishList, comic => {
+        Object.entries(wishList).forEach(comic => {
           expect(comic).toBeAComicSeries();
         });
         done();
@@ -29,7 +27,7 @@ module.exports = function(lofcg) {
       lofcg.wishList.get(readonlyUserId, filteredOptions, (err, wishList) => {
         expect(err).toBeNull();
         expect(wishList).toMatchJsonSnapshot("filtered-series-wish-list");
-        _.each(wishList, comic => {
+        Object.entries(wishList).forEach(comic => {
           expect(comic).toBeAComicSeries();
         });
         done();
@@ -40,7 +38,7 @@ module.exports = function(lofcg) {
       lofcg.wishList.get(readonlyUserId, sortedOptions, (err, wishList) => {
         expect(err).toBeNull();
         expect(wishList).toMatchJsonSnapshot("sorted-series-wish-list");
-        _.each(wishList, comic => {
+        Object.entries(wishList).forEach(comic => {
           expect(comic).toBeAComicSeries();
         });
         done();

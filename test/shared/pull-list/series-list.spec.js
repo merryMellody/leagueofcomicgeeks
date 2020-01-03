@@ -1,13 +1,8 @@
-const _ = require("lodash");
-
 module.exports = function(lofcg, pullListDate) {
   const options = { type: lofcg.types.SERIES };
-  const filteredOptions = _.extend({ publishers: ["Image Comics"] }, options);
-  const sortedOptions = _.extend({ sort: lofcg.sort.DESCENDING }, options);
-  const customSortedOptions = _.extend(
-    { sort: lofcg.sort.MOST_PULLED },
-    options
-  );
+  const filteredOptions = { publishers: ["Image Comics"], ...options };
+  const sortedOptions = { sort: lofcg.sort.DESCENDING, ...options };
+  const customSortedOptions = { sort: lofcg.sort.MOST_PULLED, ...options };
 
   describe("get series list", function() {
     it("should provide no comics in pull list with an invalid user id", function(done) {
@@ -26,7 +21,7 @@ module.exports = function(lofcg, pullListDate) {
         (err, pullList) => {
           expect(err).toBeNull();
           expect(pullList).toMatchJsonSnapshot("all-series-pull-list");
-          _.each(pullList, comic => {
+          Object.entries(pullList).forEach(comic => {
             expect(comic).toBeAComicSeries();
           });
           done();
@@ -42,7 +37,7 @@ module.exports = function(lofcg, pullListDate) {
         (err, pullList) => {
           expect(err).toBeNull();
           expect(pullList).toMatchJsonSnapshot("filtered-series-pull-list");
-          _.each(pullList, comic => {
+          Object.entries(pullList).forEach(comic => {
             expect(comic).toBeAComicSeries();
           });
           done();
@@ -58,7 +53,7 @@ module.exports = function(lofcg, pullListDate) {
         (err, pullList) => {
           expect(err).toBeNull();
           expect(pullList).toMatchJsonSnapshot("sorted-series-pull-list");
-          _.each(pullList, comic => {
+          Object.entries(pullList).forEach(comic => {
             expect(comic).toBeAComicSeries();
           });
           done();
@@ -75,7 +70,7 @@ module.exports = function(lofcg, pullListDate) {
           expect(err).toBeNull();
           // Custom sorting does not apply to series
           expect(pullList).toMatchJsonSnapshot("all-series-pull-list");
-          _.each(pullList, comic => {
+          Object.entries(pullList).forEach(comic => {
             expect(comic).toBeAComicSeries();
           });
           done();

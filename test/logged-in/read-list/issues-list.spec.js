@@ -1,9 +1,9 @@
-const _ = require("lodash");
+const partial = require("lodash/partial");
 const helpers = require("../../utils/helper-tests");
 
 module.exports = function(lofcg) {
   const additionalArgs = [];
-  const confirmEmptyFirst = _.partial(
+  const confirmEmptyFirst = partial(
     helpers.confirmEmptyFirst,
     lofcg.readList,
     additionalArgs
@@ -33,7 +33,7 @@ module.exports = function(lofcg) {
             lofcg.readList.get(editableUserId, (err, readList) => {
               expect(err).toBeNull();
               expect(readList).toMatchJsonSnapshot("all-issues-read-list");
-              _.each(readList, comic => {
+              Object.entries(readList).forEach(comic => {
                 expect(comic).toBeAComicIssue();
               });
               done();

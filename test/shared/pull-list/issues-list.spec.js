@@ -1,5 +1,3 @@
-const _ = require("lodash");
-
 module.exports = function(lofcg, pullListDate) {
   describe("get issues list", function() {
     it("should provide no comics in pull list with an invalid user id", function(done) {
@@ -14,7 +12,7 @@ module.exports = function(lofcg, pullListDate) {
       lofcg.pullList.get(readonlyUserId, pullListDate, (err, pullList) => {
         expect(err).toBeNull();
         expect(pullList).toMatchJsonSnapshot("all-issues-pull-list");
-        _.each(pullList, comic => {
+        Object.entries(pullList).forEach(comic => {
           expect(comic).toBeAComicIssue();
         });
         done();
@@ -29,7 +27,7 @@ module.exports = function(lofcg, pullListDate) {
         (err, pullList) => {
           expect(err).toBeNull();
           expect(pullList).toMatchJsonSnapshot("filtered-issues-pull-list");
-          _.each(pullList, comic => {
+          Object.entries(pullList).forEach(comic => {
             expect(comic).toBeAComicIssue();
           });
           done();
@@ -45,7 +43,7 @@ module.exports = function(lofcg, pullListDate) {
         (err, pullList) => {
           expect(err).toBeNull();
           expect(pullList).toMatchJsonSnapshot("sorted-issues-pull-list");
-          _.each(pullList, comic => {
+          Object.entries(pullList).forEach(comic => {
             expect(comic).toBeAComicIssue();
           });
           done();
@@ -63,7 +61,7 @@ module.exports = function(lofcg, pullListDate) {
           expect(pullList).toMatchJsonSnapshot(
             "custom-sorted-issues-pull-list"
           );
-          _.each(pullList, comic => {
+          Object.entries(pullList).forEach(comic => {
             expect(comic).toBeAComicIssue();
           });
           done();

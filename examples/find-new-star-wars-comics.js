@@ -7,7 +7,7 @@ const lofcg = require("../");
 const weeks = 10;
 const wednesday = moment().day(3);
 const filter = "star wars";
-const range = Array.from({ length: weeks }, (_, i) => i);
+const range = [...Array(weeks).keys()];
 const data = [];
 
 const filterUnwanted = function(list) {
